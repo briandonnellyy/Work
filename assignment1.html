@@ -85,10 +85,10 @@
             </div>
 
             <div id="startPagination" style="display: block">
-                <button onclick="window.id = 1; start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')">Add</button>
+                <button onclick="window.id = 1; start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')" class="btn-info">Add</button>
             </div>
             <div id="addAfterStart" style="display: none">
-                <button onclick="start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')">Add</button>
+                <button onclick="start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')" class="btn-info">Add</button>
             </div>
 
             <div id="createUpdate" style="display: none">
@@ -100,12 +100,13 @@
                     <option value="Drama">Drama</option>
                     <option value="Horror">Horror</option>
                     <option value="Sci-fi">Sci-fi</option>
+                    <option value="Thriller">Thriller</option>
                   </select><br/> <strong>Date Published</strong> <input type="date" id="inputDate" required><br/>
-                <button id="updateCreate" onclick="validateFilm()">Create</button>
+                <button id="updateCreate" onclick="validateFilm()" class="btn-success">Create</button>
 
 
             </div>
-            <div id="doneAdding" style="display: none" onclick="done('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')"><button id="doneAdd">Done</button></div>
+            <div id="doneAdding" style="display: none" onclick="done('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')"><button id="doneAdd" class="btn-success">Done</button></div>
 
             <div id="database" style="display: block">
                 <table id="filmList" class="table">
@@ -116,21 +117,34 @@
                         <th>Date Published</th>
                         <th>Delete</th>
                         <th>Update</th>
+                        <th>Trailer</th>
                     </tr>
                 </table>
             </div>
 
             <div style="display: none" id="deleteTemplate">
-                <button onclick="deleteFilm(this)">Delete</button>
+                <button onclick="deleteFilm(this)" class="btn-danger">Delete</button>
             </div>
 
             <div style="display: none" id="updateTemplate">
-                <button onclick="update(this); start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')">Update</button>
+                <button onclick="update(this); start('startPagination','createUpdate','desc1','desc2','doneAdding','addAfterStart')" class="btn-info">Update</button>
+            </div>
+            <div style="display: none" id="trailerTemplate">
+                <button onclick="trailerSearch(this, 'https://www.youtube.com/results?search_query=')" );>Trailer</button>
             </div>
         </div>
     </div>
 
     <script>
+        function trailerSearch(thisElem, url) {
+            var rowUpdate = thisElem.closest("tr");
+            var rowId = rowUpdate.getAttribute("id");
+            var trailerSpace = '%20trailer';
+            var film = {};
+            film.name = rowUpdate.getElementsByTagName("td")[1].firstChild.nodeValue;
+            window.open(url + film.name + trailerSpace, '_blank');
+        }
+
         function validateFilm() {
             var input, text;
             input = document.getElementById("inputId").value;
@@ -177,6 +191,9 @@
             cell = rowCreate.insertCell(5);
             var updateText = document.getElementById("updateTemplate").innerHTML;
             cell.innerHTML = updateText;
+            cell = rowCreate.insertCell(6);
+            var trailerText = document.getElementById("trailerTemplate").innerHTML;
+            cell.innerHTML = trailerText;
             if (id > 1) {
                 doneAdd.style.display = "block";
             } else {}
